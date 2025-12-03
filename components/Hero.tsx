@@ -24,7 +24,7 @@ const Hero: React.FC = () => {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight drop-shadow-sm">
             Sistem Pelayanan <br/>
             <span className="text-cyan-100">Desa Tangkas</span>
-            <span className="block text-2xl md:text-3xl mt-2 font-normal text-white/90">— Cepat, Mudah, dan Transparan.</span>
+            <span className="block text-2xl md:text-3xl mt-2 font-normal text-white/90"> Cepat, Mudah, dan Transparan.</span>
           </h1>
           
           <p className="text-lg md:text-xl text-cyan-50 max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
