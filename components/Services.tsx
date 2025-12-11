@@ -386,9 +386,9 @@ const RequirementsModal: React.FC<{
                 <p className="text-xs text-slate-400 mt-2">Simpan nomor ini untuk melacak status</p>
               </div>
               <div className="flex flex-col gap-3">
-                <a href={getWhatsappLink(trackingNumber)} target="_blank" rel="noopener noreferrer"
-                  className="w-full py-3 px-4 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
-                  <MessageCircle size={18} />Konfirmasi via WhatsApp
+                <a href="/cek-status"
+                  className="w-full py-3 px-4 rounded-xl bg-tangkas-primary text-white font-semibold hover:bg-tangkas-dark transition-colors flex items-center justify-center gap-2">
+                  <Search size={18} />Cek Status Permohonan
                 </a>
                 <button onClick={onClose} className="w-full py-3 px-4 rounded-xl border border-slate-200 text-slate-600 font-semibold hover:bg-slate-50 transition-colors">Selesai</button>
               </div>
