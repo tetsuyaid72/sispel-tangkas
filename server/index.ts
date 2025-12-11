@@ -7,9 +7,9 @@ import requestsRoutes from './routes/requests.js';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
+// Middleware - Allow all origins for production
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:3000', 'http://127.0.0.1:5173'],
+    origin: true,
     credentials: true,
 }));
 app.use(express.json());
