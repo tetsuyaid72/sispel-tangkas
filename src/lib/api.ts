@@ -1,6 +1,19 @@
 // API client for Pelayanan Desa Tangkas
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+// Auto-detect API URL: same host with port 3001 in production, localhost in development
+const getApiBaseUrl = () => {
+    if (import.meta.env.VITE_API_URL) {
+        return import.meta.env.VITE_API_URL;
+    }
+    // If running on localhost, use localhost backend
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return 'http://localhost:3001/api';
+    }
+    // Otherwise, use same host with port 3001
+    return `http://${window.location.hostname}:3001/api`;
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 // Types
 export interface ServiceRequest {

@@ -254,7 +254,7 @@ export default function AdminRequestDetail() {
                                                     </div>
                                                     {doc.path && (
                                                         <a
-                                                            href={`http://localhost:3001/uploads/${doc.path}`}
+                                                            href={`${window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : `http://${window.location.hostname}:3001`}/uploads/${doc.path}`}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
                                                             className="download-btn"
