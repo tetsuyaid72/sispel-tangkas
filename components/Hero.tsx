@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, MessageCircle } from 'lucide-react';
+import { ArrowRight, MessageCircle, Search } from 'lucide-react';
 import { WHATSAPP_NUMBER } from '../constants';
 
 const Hero: React.FC = () => {
@@ -20,33 +20,31 @@ const Hero: React.FC = () => {
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
             Pelayanan Online 24/7
           </div>
-          
+
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight drop-shadow-sm">
-            Sistem Pelayanan <br/>
+            Sistem Pelayanan <br />
             <span className="text-cyan-100">Desa Tangkas</span>
             <span className="block text-2xl md:text-3xl mt-2 font-normal text-white/90"> Cepat, Mudah, dan Transparan.</span>
           </h1>
-          
+
           <p className="text-lg md:text-xl text-cyan-50 max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
             Platform resmi untuk mempermudah seluruh kebutuhan administrasi masyarakat Desa Tangkas secara digital.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
-             <a 
+            <a
               href="#layanan"
               className="px-8 py-4 rounded-xl bg-white text-tangkas-dark font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2 group"
             >
               Lihat Layanan Desa
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </a>
-            <a 
-              href={`https://wa.me/${WHATSAPP_NUMBER}`}
-              target="_blank" 
-              rel="noopener noreferrer"
+            <a
+              href="/cek-status"
               className="px-8 py-4 rounded-xl bg-white/10 border-2 border-white/30 text-white font-semibold hover:bg-white/20 transition-all flex items-center justify-center gap-2 backdrop-blur-sm hover:scale-105"
             >
-              <MessageCircle size={20} />
-              Ajukan via WhatsApp
+              <Search size={20} />
+              Cek Status Permohonan
             </a>
           </div>
         </div>
@@ -55,39 +53,39 @@ const Hero: React.FC = () => {
         <div className="hidden lg:block relative animate-float">
           {/* Main Card */}
           <div className="relative z-10 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
-             <div className="bg-white rounded-xl p-6 shadow-inner overflow-hidden min-h-[300px] flex flex-col">
-                {/* Header of the mock interface */}
-                <div className="flex items-center justify-between mb-8 border-b border-slate-100 pb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-tangkas-light/10 flex items-center justify-center">
-                      <MessageCircle className="text-tangkas-primary" size={20} />
-                    </div>
-                    <div>
-                      <div className="h-4 w-32 bg-slate-200 rounded animate-pulse"></div>
-                      <div className="h-3 w-20 bg-slate-100 rounded mt-2"></div>
-                    </div>
+            <div className="bg-white rounded-xl p-6 shadow-inner overflow-hidden min-h-[300px] flex flex-col">
+              {/* Header of the mock interface */}
+              <div className="flex items-center justify-between mb-8 border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-tangkas-light/10 flex items-center justify-center">
+                    <MessageCircle className="text-tangkas-primary" size={20} />
                   </div>
-                  <div className="w-8 h-8 rounded-full bg-slate-100"></div>
+                  <div>
+                    <div className="h-4 w-32 bg-slate-200 rounded animate-pulse"></div>
+                    <div className="h-3 w-20 bg-slate-100 rounded mt-2"></div>
+                  </div>
                 </div>
+                <div className="w-8 h-8 rounded-full bg-slate-100"></div>
+              </div>
 
-                {/* Mock Services */}
-                <div className="space-y-4">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="flex items-center gap-4 p-3 rounded-lg border border-slate-50 hover:bg-slate-50 transition-colors">
-                       <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${i === 1 ? 'bg-teal-100 text-teal-600' : i === 2 ? 'bg-blue-100 text-blue-600' : 'bg-orange-100 text-orange-600'}`}>
-                          <div className="w-5 h-5 bg-current opacity-50 rounded"></div>
-                       </div>
-                       <div className="flex-1 space-y-2">
-                          <div className="h-3 w-3/4 bg-slate-200 rounded"></div>
-                          <div className="h-2 w-1/2 bg-slate-100 rounded"></div>
-                       </div>
-                       <div className="w-6 h-6 rounded-full bg-slate-100"></div>
+              {/* Mock Services */}
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="flex items-center gap-4 p-3 rounded-lg border border-slate-50 hover:bg-slate-50 transition-colors">
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${i === 1 ? 'bg-teal-100 text-teal-600' : i === 2 ? 'bg-blue-100 text-blue-600' : 'bg-orange-100 text-orange-600'}`}>
+                      <div className="w-5 h-5 bg-current opacity-50 rounded"></div>
                     </div>
-                  ))}
-                </div>
-             </div>
+                    <div className="flex-1 space-y-2">
+                      <div className="h-3 w-3/4 bg-slate-200 rounded"></div>
+                      <div className="h-2 w-1/2 bg-slate-100 rounded"></div>
+                    </div>
+                    <div className="w-6 h-6 rounded-full bg-slate-100"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-          
+
           {/* Decorative Back Elements */}
           <div className="absolute -top-12 -right-12 w-48 h-48 bg-yellow-400/30 rounded-full blur-3xl"></div>
           <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-cyan-400/30 rounded-full blur-3xl"></div>

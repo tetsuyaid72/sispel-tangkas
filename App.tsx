@@ -6,7 +6,6 @@ import About from './components/About';
 import Complaint from './components/Complaint';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import FloatingWhatsApp from './components/FloatingWhatsApp';
 
 function App() {
   return (
@@ -20,7 +19,6 @@ function App() {
         <Contact />
       </main>
       <Footer />
-      <FloatingWhatsApp />
     </div>
   );
 }
