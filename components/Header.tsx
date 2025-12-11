@@ -40,10 +40,10 @@ const Header: React.FC = () => {
             className={`transition-all duration-300 ${isScrolled ? 'h-10' : 'h-12 drop-shadow-lg'}`}
           />
           <div className="flex flex-col">
-            <span className={`font-bold tracking-tight leading-none ${isScrolled ? 'text-slate-800' : 'text-slate-800 lg:text-white lg:drop-shadow-md'} text-lg`}>
+            <span className={`font-bold tracking-tight leading-none ${isScrolled ? 'text-slate-800' : 'text-white drop-shadow-md'} text-lg`}>
               DESA TANGKAS
             </span>
-            <span className={`text-xs font-medium tracking-wide ${isScrolled ? 'text-tangkas-primary' : 'text-tangkas-primary lg:text-white/90 lg:drop-shadow-md'}`}>
+            <span className={`text-xs font-medium tracking-wide ${isScrolled ? 'text-tangkas-primary' : 'text-white/90 drop-shadow-md'}`}>
               KABUPATEN BANJAR
             </span>
           </div>
