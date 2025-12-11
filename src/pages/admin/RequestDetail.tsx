@@ -18,7 +18,8 @@ import {
     AlertCircle,
     Save,
     Download,
-    Paperclip
+    Paperclip,
+    Eye
 } from 'lucide-react';
 
 interface StatusHistory {
@@ -243,29 +244,48 @@ export default function AdminRequestDetail() {
                                             <span className="doc-count">{docs.length} file</span>
                                         </div>
                                         <div className="documents-list">
-                                            {docs.map((doc: any, index: number) => (
-                                                <div key={index} className="document-item">
-                                                    <div className="doc-info">
-                                                        <Paperclip size={18} />
-                                                        <div>
-                                                            <span className="doc-name">{doc.filename || doc.label || `Dokumen ${index + 1}`}</span>
-                                                            {doc.label && <span className="doc-label">{doc.label}</span>}
+                                            {docs.map((doc: any, index: number) => {
+                                                const filePath = doc.path || doc.storedFilename || doc.filename;
+                                                const apiHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                                                    ? 'http://localhost:3001'
+                                                    : `http://${window.location.hostname}:3001`;
+                                                const fileUrl = filePath ? `${apiHost}/uploads/${filePath}` : null;
+
+                                                return (
+                                                    <div key={index} className="document-item">
+                                                        <div className="doc-info">
+                                                            <Paperclip size={18} />
+                                                            <div>
+                                                                <span className="doc-name">{doc.originalFilename || doc.filename || doc.label || `Dokumen ${index + 1}`}</span>
+                                                                {doc.label && <span className="doc-label">{doc.label}</span>}
+                                                            </div>
+                                                        </div>
+                                                        <div className="doc-actions">
+                                                            {fileUrl && (
+                                                                <>
+                                                                    <a
+                                                                        href={fileUrl}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        className="view-btn"
+                                                                    >
+                                                                        <Eye size={16} />
+                                                                        View
+                                                                    </a>
+                                                                    <a
+                                                                        href={fileUrl}
+                                                                        download
+                                                                        className="download-btn"
+                                                                    >
+                                                                        <Download size={16} />
+                                                                        Download
+                                                                    </a>
+                                                                </>
+                                                            )}
                                                         </div>
                                                     </div>
-                                                    {doc.path && (
-                                                        <a
-                                                            href={`${window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : `http://${window.location.hostname}:3001`}/uploads/${doc.path}`}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="download-btn"
-                                                            download
-                                                        >
-                                                            <Download size={16} />
-                                                            Download
-                                                        </a>
-                                                    )}
-                                                </div>
-                                            ))}
+                                                );
+                                            })}
                                         </div>
                                     </div>
                                 );
@@ -757,6 +777,32 @@ export default function AdminRequestDetail() {
                     margin-top: 2px;
                 }
 
+                .doc-actions {
+                    display: flex;
+                    gap: 8px;
+                    flex-shrink: 0;
+                }
+
+                .view-btn {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    padding: 8px 16px;
+                    background: #0284c7;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 13px;
+                    font-weight: 500;
+                    text-decoration: none;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+
+                .view-btn:hover {
+                    background: #0369a1;
+                }
+
                 .download-btn {
                     display: inline-flex;
                     align-items: center;
@@ -771,7 +817,6 @@ export default function AdminRequestDetail() {
                     text-decoration: none;
                     cursor: pointer;
                     transition: all 0.2s;
-                    flex-shrink: 0;
                 }
 
                 .download-btn:hover {
@@ -788,7 +833,13 @@ export default function AdminRequestDetail() {
                         align-items: stretch;
                     }
 
-                    .download-btn {
+                    .doc-actions {
+                        flex-direction: row;
+                        justify-content: stretch;
+                    }
+
+                    .view-btn, .download-btn {
+                        flex: 1;
                         justify-content: center;
                     }
                 }
