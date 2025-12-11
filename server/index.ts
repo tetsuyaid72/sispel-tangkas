@@ -23,6 +23,33 @@ app.use((req, _res, next) => {
     next();
 });
 
+// API Info
+app.get('/api', (_req, res) => {
+    res.json({
+        name: 'Pelayanan Desa Tangkas API',
+        version: '1.0.0',
+        status: 'running',
+        endpoints: {
+            health: 'GET /api/health',
+            auth: {
+                login: 'POST /api/auth/login',
+                me: 'GET /api/auth/me',
+                logout: 'POST /api/auth/logout'
+            },
+            requests: {
+                list: 'GET /api/requests',
+                create: 'POST /api/requests',
+                detail: 'GET /api/requests/:id',
+                track: 'GET /api/requests/track/:trackingNumber',
+                updateStatus: 'PATCH /api/requests/:id/status',
+                delete: 'DELETE /api/requests/:id',
+                stats: 'GET /api/requests/stats'
+            }
+        },
+        timestamp: new Date().toISOString()
+    });
+});
+
 // Health check
 app.get('/api/health', (_req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });

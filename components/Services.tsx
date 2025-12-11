@@ -29,7 +29,7 @@ const Services: React.FC = () => {
             Layanan Publik Digital
           </h2>
           <p className="text-slate-600 text-lg">
-            Pilih layanan yang Anda butuhkan, lihat persyaratannya, lalu ajukan via WhatsApp.
+            Pilih layanan yang Anda butuhkan, lihat persyaratannya, lalu ajukan.
           </p>
         </div>
 

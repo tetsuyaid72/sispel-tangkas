@@ -35,8 +35,8 @@ export default function AdminLogin() {
         <div className="admin-login-page">
             <div className="login-container">
                 <div className="login-header">
-                    <div className="login-icon">
-                        <LogIn size={32} />
+                    <div className="login-logo">
+                        <img src="/images/logodesa.png" alt="Logo Desa Tangkas" />
                     </div>
                     <h1>Admin Panel</h1>
                     <p>Pelayanan Desa Tangkas</p>
@@ -133,16 +133,16 @@ export default function AdminLogin() {
                     margin-bottom: 32px;
                 }
                 
-                .login-icon {
-                    width: 64px;
-                    height: 64px;
-                    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-                    border-radius: 16px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
+                .login-logo {
+                    width: 60px;
+                    height: 60px;
                     margin: 0 auto 16px;
-                    color: white;
+                }
+                
+                .login-logo img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
                 }
                 
                 .login-header h1 {
