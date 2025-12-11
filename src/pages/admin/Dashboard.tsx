@@ -171,19 +171,19 @@ export default function Dashboard() {
                                     ) : (
                                         recentRequests.map((request) => (
                                             <tr key={request.id}>
-                                                <td>
+                                                <td data-label="Tracking">
                                                     <code>{request.trackingNumber}</code>
                                                 </td>
-                                                <td>{request.applicantName}</td>
-                                                <td>{request.serviceTitle}</td>
-                                                <td>
+                                                <td data-label="Pemohon">{request.applicantName}</td>
+                                                <td data-label="Layanan">{request.serviceTitle}</td>
+                                                <td data-label="Status">
                                                     <span className={`status-badge ${request.status}`}>
                                                         {getStatusIcon(request.status)}
                                                         {getStatusLabel(request.status)}
                                                     </span>
                                                 </td>
-                                                <td>{formatDate(request.createdAt)}</td>
-                                                <td>
+                                                <td data-label="Tanggal">{formatDate(request.createdAt)}</td>
+                                                <td data-label="">
                                                     <button
                                                         className="detail-button"
                                                         onClick={() => navigate(`/admin/requests/${request.id}`)}
@@ -415,16 +415,76 @@ export default function Dashboard() {
                     background: #e2e8f0;
                 }
                 
-                @media (max-width: 768px) {
+                @media (max-width: 640px) {
                     .stats-grid {
                         grid-template-columns: 1fr 1fr;
+                        gap: 12px;
                     }
                     
-                    .requests-table th:nth-child(3),
-                    .requests-table td:nth-child(3),
-                    .requests-table th:nth-child(5),
-                    .requests-table td:nth-child(5) {
+                    .stat-card {
+                        padding: 16px;
+                    }
+                    
+                    .stat-number {
+                        font-size: 28px;
+                    }
+                    
+                    .stat-label {
+                        font-size: 12px;
+                    }
+                }
+
+                @media (max-width: 768px) {
+                    .requests-table {
+                        display: block;
+                    }
+                    
+                    .requests-table thead {
                         display: none;
+                    }
+                    
+                    .requests-table tbody {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 12px;
+                    }
+                    
+                    .requests-table tr {
+                        display: flex;
+                        flex-direction: column;
+                        background: #f8fafc;
+                        border-radius: 12px;
+                        padding: 16px;
+                        gap: 8px;
+                        border: 1px solid #e2e8f0;
+                    }
+                    
+                    .requests-table td {
+                        padding: 0;
+                        border: none;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+                    
+                    .requests-table td::before {
+                        content: attr(data-label);
+                        font-weight: 600;
+                        color: #64748b;
+                        font-size: 12px;
+                        text-transform: uppercase;
+                    }
+                    
+                    .requests-table code {
+                        font-size: 12px;
+                    }
+                    
+                    .empty-cell {
+                        text-align: center;
+                    }
+                    
+                    .recent-section h2 {
+                        font-size: 18px;
                     }
                 }
             `}</style>

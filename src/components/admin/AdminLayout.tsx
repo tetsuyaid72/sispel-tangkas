@@ -297,7 +297,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
                     z-index: 99;
                 }
                 
-                @media (max-width: 768px) {
+                @media (max-width: 1024px) {
                     .admin-sidebar {
                         transform: translateX(-100%);
                     }
@@ -324,11 +324,11 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
                     }
                     
                     .main-content {
-                        padding: 16px;
+                        padding: 12px;
                     }
                 }
                 
-                @media (min-width: 769px) {
+                @media (min-width: 1025px) {
                     .main-header {
                         display: block;
                     }
