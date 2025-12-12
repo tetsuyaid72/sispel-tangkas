@@ -367,7 +367,13 @@ export default function AdminRequestDetail() {
                                     )}
                                 </button>
                                 <a
-                                    href={`https://wa.me/${request?.applicantPhone?.replace(/\D/g, '')}?text=${encodeURIComponent(`Halo ${request?.applicantName}, ini dari Admin Desa Tangkas. Pengajuan Anda dengan nomor tracking ${request?.trackingNumber} sedang kami proses. Terima kasih.`)}`}
+                                    href={`https://wa.me/${request?.applicantPhone?.replace(/\D/g, '')}?text=${encodeURIComponent(
+                                        newStatus === 'completed'
+                                            ? `Halo ${request?.applicantName}, ini dari Admin Desa Tangkas. Pengajuan Anda dengan nomor tracking ${request?.trackingNumber} telah SELESAI diproses. Silakan ambil dokumen fisiknya di Balai Desa Tangkas. Terima kasih.`
+                                            : newStatus === 'rejected'
+                                                ? `Halo ${request?.applicantName}, ini dari Admin Desa Tangkas. Mohon maaf, pengajuan Anda dengan nomor tracking ${request?.trackingNumber} tidak dapat kami proses. Silakan hubungi kami untuk informasi lebih lanjut. Terima kasih.`
+                                                : `Halo ${request?.applicantName}, ini dari Admin Desa Tangkas. Pengajuan Anda dengan nomor tracking ${request?.trackingNumber} sedang kami proses. Terima kasih.`
+                                    )}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="whatsapp-button"
