@@ -322,11 +322,12 @@ router.get('/:id', authMiddleware, async (req: Request, res: Response): Promise<
     }
 });
 
-// PATCH /api/requests/:id/status - Update request status (admin only)
-router.patch('/:id/status', authMiddleware, async (req: Request, res: Response): Promise<void> => {
+// PATCH /api/requests/:id/status - Update request status with optional document upload (admin only)
+router.patch('/:id/status', authMiddleware, upload.single('completedDocument'), async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
         const { status, notes } = req.body;
+        const file = req.file;
 
         if (!status || !['pending', 'processing', 'completed', 'rejected'].includes(status)) {
             res.status(400).json({ error: 'Status tidak valid' });
@@ -354,6 +355,22 @@ router.patch('/:id/status', authMiddleware, async (req: Request, res: Response):
         // Set completedAt if status is completed or rejected
         if (status === 'completed' || status === 'rejected') {
             updateData.completedAt = now;
+        }
+
+        // Handle completed document upload
+        if (file) {
+            const existingDocs = existingRequest.completedDocuments
+                ? JSON.parse(existingRequest.completedDocuments)
+                : [];
+
+            existingDocs.push({
+                originalFilename: file.originalname,
+                storedFilename: file.filename,
+                path: file.filename,
+                uploadedAt: now,
+            });
+
+            updateData.completedDocuments = JSON.stringify(existingDocs);
         }
 
         // Update request

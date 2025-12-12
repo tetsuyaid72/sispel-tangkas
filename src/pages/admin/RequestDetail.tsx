@@ -19,7 +19,9 @@ import {
     Save,
     Download,
     Paperclip,
-    Eye
+    Eye,
+    Upload,
+    MessageCircle
 } from 'lucide-react';
 
 interface StatusHistory {
@@ -44,6 +46,7 @@ export default function AdminRequestDetail() {
     const [statusNotes, setStatusNotes] = useState('');
     const [isUpdating, setIsUpdating] = useState(false);
     const [updateMessage, setUpdateMessage] = useState('');
+    const [completedDocFile, setCompletedDocFile] = useState<File | null>(null);
 
     useEffect(() => {
         if (id) {
@@ -72,9 +75,10 @@ export default function AdminRequestDetail() {
         try {
             setIsUpdating(true);
             setUpdateMessage('');
-            await updateRequestStatus(request.id, newStatus as any, statusNotes || undefined);
+            await updateRequestStatus(request.id, newStatus as any, statusNotes || undefined, completedDocFile || undefined);
             setUpdateMessage('Status berhasil diperbarui!');
             setStatusNotes('');
+            setCompletedDocFile(null);
             loadRequestDetail();
         } catch (err: any) {
             setUpdateMessage(err.message || 'Gagal memperbarui status');
@@ -244,48 +248,45 @@ export default function AdminRequestDetail() {
                                             <span className="doc-count">{docs.length} file</span>
                                         </div>
                                         <div className="documents-list">
-                                            {docs.map((doc: any, index: number) => {
-                                                const filePath = doc.path || doc.storedFilename || doc.filename;
-                                                const apiHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                                                    ? 'http://localhost:3001'
-                                                    : `http://${window.location.hostname}:3001`;
-                                                const fileUrl = filePath ? `${apiHost}/uploads/${filePath}` : null;
+                                            {docs
+                                                .filter((doc: any) => doc.path || doc.storedFilename || doc.filename)
+                                                .map((doc: any, index: number) => {
+                                                    const filePath = doc.path || doc.storedFilename || doc.filename;
+                                                    const apiHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                                                        ? 'http://localhost:3001'
+                                                        : `http://${window.location.hostname}:3001`;
+                                                    const fileUrl = `${apiHost}/uploads/${filePath}`;
 
-                                                return (
-                                                    <div key={index} className="document-item">
-                                                        <div className="doc-info">
-                                                            <Paperclip size={18} />
-                                                            <div>
-                                                                <span className="doc-name">{doc.originalFilename || doc.filename || doc.label || `Dokumen ${index + 1}`}</span>
-                                                                {doc.label && <span className="doc-label">{doc.label}</span>}
+                                                    return (
+                                                        <div key={index} className="document-item">
+                                                            <div className="doc-info">
+                                                                <Paperclip size={18} />
+                                                                <div>
+                                                                    <span className="doc-name">{doc.originalFilename || doc.filename || `Dokumen ${index + 1}`}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div className="doc-actions">
+                                                                <a
+                                                                    href={fileUrl}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="view-btn"
+                                                                >
+                                                                    <Eye size={16} />
+                                                                    View
+                                                                </a>
+                                                                <a
+                                                                    href={fileUrl}
+                                                                    download
+                                                                    className="download-btn"
+                                                                >
+                                                                    <Download size={16} />
+                                                                    Download
+                                                                </a>
                                                             </div>
                                                         </div>
-                                                        <div className="doc-actions">
-                                                            {fileUrl && (
-                                                                <>
-                                                                    <a
-                                                                        href={fileUrl}
-                                                                        target="_blank"
-                                                                        rel="noopener noreferrer"
-                                                                        className="view-btn"
-                                                                    >
-                                                                        <Eye size={16} />
-                                                                        View
-                                                                    </a>
-                                                                    <a
-                                                                        href={fileUrl}
-                                                                        download
-                                                                        className="download-btn"
-                                                                    >
-                                                                        <Download size={16} />
-                                                                        Download
-                                                                    </a>
-                                                                </>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
+                                                    );
+                                                })}
                                         </div>
                                     </div>
                                 );
@@ -326,25 +327,55 @@ export default function AdminRequestDetail() {
                                 />
                             </div>
 
+                            <div className="form-group">
+                                <label>Upload Dokumen Selesai (Opsional)</label>
+                                <div className="file-upload-area">
+                                    <input
+                                        type="file"
+                                        id="completedDoc"
+                                        accept=".pdf,.jpg,.jpeg,.png"
+                                        onChange={(e) => setCompletedDocFile(e.target.files?.[0] || null)}
+                                        disabled={isUpdating}
+                                        className="file-input"
+                                    />
+                                    <label htmlFor="completedDoc" className="file-upload-btn">
+                                        <Upload size={18} />
+                                        {completedDocFile ? completedDocFile.name : 'Pilih file dokumen selesai'}
+                                    </label>
+                                    <p className="file-hint">Format: PDF, JPG, PNG (Maks. 5MB)</p>
+                                </div>
+                            </div>
+
                             {updateMessage && (
                                 <div className={`update-message ${updateMessage.includes('berhasil') ? 'success' : 'error'}`}>
                                     {updateMessage}
                                 </div>
                             )}
 
-                            <button type="submit" className="update-button" disabled={isUpdating}>
-                                {isUpdating ? (
-                                    <>
-                                        <Loader2 className="spinner" size={18} />
-                                        Memproses...
-                                    </>
-                                ) : (
-                                    <>
-                                        <Save size={18} />
-                                        Simpan Perubahan
-                                    </>
-                                )}
-                            </button>
+                            <div className="button-row">
+                                <button type="submit" className="update-button" disabled={isUpdating}>
+                                    {isUpdating ? (
+                                        <>
+                                            <Loader2 className="spinner" size={18} />
+                                            Memproses...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Save size={18} />
+                                            Simpan Perubahan
+                                        </>
+                                    )}
+                                </button>
+                                <a
+                                    href={`https://wa.me/${request?.applicantPhone?.replace(/\D/g, '')}?text=${encodeURIComponent(`Halo ${request?.applicantName}, ini dari Admin Desa Tangkas. Pengajuan Anda dengan nomor tracking ${request?.trackingNumber} sedang kami proses. Terima kasih.`)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="whatsapp-button"
+                                >
+                                    <MessageCircle size={18} />
+                                    Hubungi Pemohon
+                                </a>
+                            </div>
                         </form>
                     </div>
 
@@ -841,6 +872,81 @@ export default function AdminRequestDetail() {
                     .view-btn, .download-btn {
                         flex: 1;
                         justify-content: center;
+                    }
+                }
+
+                .file-upload-area {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                }
+
+                .file-input {
+                    display: none;
+                }
+
+                .file-upload-btn {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    padding: 14px 20px;
+                    background: #f1f5f9;
+                    border: 2px dashed #cbd5e1;
+                    border-radius: 10px;
+                    color: #64748b;
+                    font-size: 14px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+
+                .file-upload-btn:hover {
+                    background: #e2e8f0;
+                    border-color: #94a3b8;
+                    color: #475569;
+                }
+
+                .file-hint {
+                    font-size: 12px;
+                    color: #94a3b8;
+                    margin: 0;
+                }
+
+                .button-row {
+                    display: flex;
+                    gap: 12px;
+                }
+
+                .button-row .update-button {
+                    flex: 1;
+                }
+
+                .whatsapp-button {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    flex: 1;
+                    padding: 14px 24px;
+                    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+                    color: white;
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    text-decoration: none;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+
+                .whatsapp-button:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+                }
+
+                @media (max-width: 768px) {
+                    .button-row {
+                        flex-direction: column;
                     }
                 }
             `}</style>

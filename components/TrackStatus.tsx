@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Clock, Loader2, CheckCircle, XCircle, FileText, ArrowLeft, AlertCircle, MessageCircle } from 'lucide-react';
+import { Search, Clock, Loader2, CheckCircle, XCircle, FileText, ArrowLeft, AlertCircle, MessageCircle, Download } from 'lucide-react';
 import { trackRequest, TrackResponse } from '../src/lib/api';
 import { WHATSAPP_NUMBER } from '../constants';
 
@@ -221,6 +221,47 @@ export default function TrackStatus() {
                                     })}
                                 </div>
                             </div>
+
+                            {/* Completed Documents */}
+                            {result.request.completedDocuments && (() => {
+                                try {
+                                    const docs = JSON.parse(result.request.completedDocuments);
+                                    if (docs.length > 0) {
+                                        const apiHost = window.location.hostname === 'localhost'
+                                            ? 'http://localhost:3001'
+                                            : `http://${window.location.hostname}:3001`;
+                                        return (
+                                            <div className="p-6 border-t border-slate-100 bg-green-50">
+                                                <h3 className="font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                                                    <CheckCircle size={18} className="text-green-600" />
+                                                    Dokumen Selesai
+                                                </h3>
+                                                <p className="text-sm text-slate-600 mb-4">
+                                                    Dokumen permohonan Anda telah selesai diproses. Silakan unduh dokumen di bawah ini:
+                                                </p>
+                                                <div className="space-y-2">
+                                                    {docs.map((doc: any, idx: number) => (
+                                                        <a
+                                                            key={idx}
+                                                            href={`${apiHost}/uploads/${doc.path || doc.storedFilename}`}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            download
+                                                            className="flex items-center gap-3 p-3 bg-white rounded-lg border border-green-200 hover:bg-green-50 transition-colors"
+                                                        >
+                                                            <Download size={18} className="text-green-600" />
+                                                            <span className="text-slate-700">{doc.originalFilename}</span>
+                                                        </a>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        );
+                                    }
+                                } catch {
+                                    return null;
+                                }
+                                return null;
+                            })()}
 
                             {/* Actions */}
                             <div className="px-6 pb-6">

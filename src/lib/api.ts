@@ -60,6 +60,7 @@ export interface TrackResponse {
         createdAt: string;
         updatedAt: string;
         completedAt?: string;
+        completedDocuments?: string;
     };
     history: Array<{
         id: number;
@@ -229,16 +230,29 @@ export async function getRequestDetail(id: number): Promise<{
     return response.json();
 }
 
-// Update request status (admin)
+// Update request status (admin) - supports optional document upload
 export async function updateRequestStatus(
     id: number,
     status: 'pending' | 'processing' | 'completed' | 'rejected',
-    notes?: string
+    notes?: string,
+    completedDocument?: File
 ): Promise<{ message: string; request: ServiceRequest }> {
-    const response = await authFetch(`${API_BASE_URL}/requests/${id}/status`, {
+    const formData = new FormData();
+    formData.append('status', status);
+    if (notes) formData.append('notes', notes);
+    if (completedDocument) formData.append('completedDocument', completedDocument);
+
+    const authToken = getAuthToken();
+    if (!authToken) throw new Error('Unauthorized');
+
+    const response = await fetch(`${API_BASE_URL}/requests/${id}/status`, {
         method: 'PATCH',
-        body: JSON.stringify({ status, notes }),
+        headers: {
+            'Authorization': `Bearer ${authToken}`,
+        },
+        body: formData,
     });
+
     if (!response.ok) throw new Error('Gagal memperbarui status');
     return response.json();
 }

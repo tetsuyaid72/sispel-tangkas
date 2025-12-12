@@ -20,6 +20,7 @@ export const serviceRequests = sqliteTable('service_requests', {
     // Additional data
     notes: text('notes'),
     documents: text('documents'), // JSON string of document descriptions
+    completedDocuments: text('completed_documents'), // JSON string of completed documents uploaded by admin
 
     // Status tracking
     status: text('status').$type<RequestStatus>().notNull().default('pending'),
