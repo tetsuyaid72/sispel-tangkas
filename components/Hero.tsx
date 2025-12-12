@@ -1,6 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, MessageCircle, Search } from 'lucide-react';
 import { WHATSAPP_NUMBER } from '../constants';
+
+// Typewriter component with loop
+const TypeWriter: React.FC<{ text: string; speed?: number; loopDelay?: number }> = ({ text, speed = 80, loopDelay = 5000 }) => {
+  const [displayText, setDisplayText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [showCursor, setShowCursor] = useState(true);
+
+  useEffect(() => {
+    if (currentIndex < text.length) {
+      const timeout = setTimeout(() => {
+        setDisplayText(prev => prev + text[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, speed);
+      return () => clearTimeout(timeout);
+    } else {
+      // Reset after loopDelay when typing is complete
+      const resetTimeout = setTimeout(() => {
+        setDisplayText('');
+        setCurrentIndex(0);
+      }, loopDelay);
+      return () => clearTimeout(resetTimeout);
+    }
+  }, [currentIndex, text, speed, loopDelay]);
+
+  useEffect(() => {
+    const cursorInterval = setInterval(() => {
+      setShowCursor(prev => !prev);
+    }, 500);
+    return () => clearInterval(cursorInterval);
+  }, []);
+
+  return (
+    <span>
+      {displayText}
+      <span className={`${showCursor ? 'opacity-100' : 'opacity-0'} transition-opacity`}>|</span>
+    </span>
+  );
+};
 
 const Hero: React.FC = () => {
   return (
@@ -24,7 +62,9 @@ const Hero: React.FC = () => {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight drop-shadow-sm">
             Sistem Pelayanan <br />
             <span className="text-cyan-100">Desa Tangkas</span>
-            <span className="block text-2xl md:text-3xl mt-2 font-normal text-white/90"> Cepat, Mudah, dan Transparan.</span>
+            <span className="block text-2xl md:text-3xl mt-2 font-normal text-white/90">
+              <TypeWriter text="Cepat, Mudah, dan Transparan." speed={70} />
+            </span>
           </h1>
 
           <p className="text-lg md:text-xl text-cyan-50 max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
