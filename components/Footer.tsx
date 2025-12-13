@@ -1,5 +1,4 @@
 import React from 'react';
-import { LOGO_URL } from '../constants';
 
 const Footer: React.FC = () => {
   return (
@@ -7,7 +6,7 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="flex flex-col items-center text-center mb-12">
           <div className="flex items-center gap-3 mb-4">
-            <img src={LOGO_URL} alt="Logo Desa Banjar" className="h-10" />
+            <img src="/images/logodesa.png" alt="Logo Desa Tangkas" className="h-10" />
             <div className="text-left">
               <h3 className="font-bold text-slate-800 leading-none">Desa Tangkas</h3>
               <p className="text-xs text-tangkas-primary font-medium">KABUPATEN BANJAR</p>

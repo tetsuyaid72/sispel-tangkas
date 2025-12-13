@@ -43,14 +43,41 @@ const upload = multer({
     }
 });
 
-// Generate unique tracking number
-const generateTrackingNumber = (): string => {
-    const date = new Date();
-    const year = date.getFullYear().toString().slice(-2);
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    const random = Math.random().toString(36).substring(2, 8).toUpperCase();
-    return `TGK${year}${month}${day}${random}`;
+// Service ID to abbreviation mapping
+const serviceAbbreviations: Record<string, string> = {
+    'pindah': 'SPP',      // Surat Pengantar Pindah
+    'nikah': 'SPN',       // Surat Pengantar Nikah
+    'ktp': 'SPK',         // Surat Pengantar KTP
+    'skck': 'PSK',        // Pengantar SKCK
+    'akta-lahir': 'PAK',  // Perubahan Akta Kelahiran
+    'usaha': 'SKU',       // Surat Keterangan Usaha
+    'sktm': 'SKTM',       // Surat Keterangan Tidak Mampu
+    'hilang': 'SKH',      // Surat Keterangan Hilang
+    'belum-nikah': 'SKBN', // Surat Keterangan Belum Nikah
+    'belum-rumah': 'SKBR', // Surat Keterangan Belum Rumah
+    'cerai': 'SKC',       // Surat Keterangan Cerai
+    'domisili': 'SKD',    // Surat Keterangan Domisili
+    'ket-nikah': 'SKN',   // Surat Keterangan Nikah
+    'ket-lahir': 'SKL',   // Surat Keterangan Lahir
+    'kematian': 'SKK',    // Surat Keterangan Kematian
+    'waris': 'SKAW',      // Surat Keterangan Ahli Waris
+    'janda': 'SKJ',       // Surat Keterangan Janda
+    'penghasilan': 'SKPK', // Surat Keterangan Penghasilan Kerja
+    'baik': 'SKBB',       // Surat Keterangan Berkelakuan Baik
+    'lapor-mati': 'FPK',  // Formulir Pelaporan Kematian
+    'keramaian': 'SROB',  // Surat Rekomendasi Orang Banyak
+};
+
+// Generate unique tracking number: TKS-[ServiceAbbr]-[First4LettersName]
+const generateTrackingNumber = (serviceId: string, applicantName: string): string => {
+    const abbr = serviceAbbreviations[serviceId] || 'SRT';
+    // Get first 4 letters of name, uppercase, remove spaces and special chars
+    const namePart = applicantName
+        .replace(/[^a-zA-Z]/g, '') // Remove non-letters
+        .toUpperCase()
+        .substring(0, 4)
+        .padEnd(4, 'X'); // Pad with X if name is too short
+    return `TKS-${abbr}-${namePart}`;
 };
 
 // POST /api/requests - Create new service request with file uploads (public)
@@ -79,7 +106,7 @@ router.post('/', upload.array('documents', 10), async (req: Request, res: Respon
             return;
         }
 
-        const trackingNumber = generateTrackingNumber();
+        const trackingNumber = generateTrackingNumber(serviceId, applicantName);
         const now = new Date().toISOString();
 
         // Build documents array with file info
@@ -177,6 +204,7 @@ router.get('/track/:trackingNumber', async (req: Request, res: Response): Promis
                 createdAt: request.createdAt,
                 updatedAt: request.updatedAt,
                 completedAt: request.completedAt,
+                completedDocuments: request.completedDocuments,
             },
             history,
         });

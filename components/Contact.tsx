@@ -8,7 +8,7 @@ const Contact: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold text-slate-800 mb-4">Informasi Kontak</h2>
-          <p className="text-slate-600">Kunjungi kantor desa kami atau hubungi secara daring.</p>
+          <p className="text-slate-600">Kunjungi kantor desa kami atau lakukan permohonan secara digital.</p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, Phone } from 'lucide-react';
-import { LOGO_URL, WHATSAPP_NUMBER } from '../constants';
+import { WHATSAPP_NUMBER } from '../constants';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
